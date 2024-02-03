@@ -8,7 +8,7 @@ import java.util.Scanner;
 
 public abstract class AdventOfCodeSolution {
 
-    public static final boolean DEBUG_FLAG = false;
+    public static final boolean DEBUG_FLAG = true;
     public static int total = 0;
     public static final String FILE_OPERATIONS_ERROR_MSG = "Exception occurred during file operations. Exception message: %s";
     public static final String FILENAME = "input.txt";
