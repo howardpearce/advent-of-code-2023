@@ -1,16 +1,18 @@
+/**
+ * Day 4: Scratchcards
+ *
+ * @Author Howard Pearce
+ * @Date February 2, 2024
+ */
 package day.four;
 
 import day.AdventOfCodeSolution;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import static day.AdventOfCodeSolution.*;
 
 public class Scratchcards extends AdventOfCodeSolution {
 
@@ -30,12 +32,16 @@ public class Scratchcards extends AdventOfCodeSolution {
         }
         System.out.println("Solution ( part 1 ): " + total);
     }
+
     public void solvePartTwo() {
         ScratchGame game = new ScratchGame(input);
         System.out.println("Solution ( part 2 ): " + game.play().size());
     }
 }
 
+/**
+ * Represents a list of scratchcards
+ */
 class ScratchGame {
     List<Scratchcard> cards = new ArrayList<>();
     public ScratchGame(List<String> input) {
@@ -44,29 +50,25 @@ class ScratchGame {
         }
     }
 
+    /**
+     * Kick off the scratchcard game from part 2
+     * @return a list of scratchcard games as requested in part 2
+     */
     public List<Scratchcard> play() {
         List<Scratchcard> gameResults = new ArrayList<>();
         for (Scratchcard card : cards) {
             gameResults.add(card.clone());
         }
 
-//        for (int i = 0; i < gameResults.size(); i++) {
-//            debugLog(i + "");
-//            Scratchcard c = gameResults.get(i);
-//            if (!c.counted) {
-//                c.counted = true;
-//                for (int j = c.id; j < c.id + c.matches; j++) {
-//                    gameResults.add(cards.get(j).clone());
-//                }
-//                i = 0;
-//            }
-//        }
-
         playGame(gameResults, gameResults);
-
         return gameResults;
     }
 
+    /**
+     * Recursively play the game and all sub-games that occur as a result
+     * @param game the current game to play
+     * @param gameResults where to store the results of the game
+     */
     public void playGame(List<Scratchcard> game, List<Scratchcard> gameResults) {
         List<Scratchcard> subgame = new ArrayList<>();
         for (int i = 0; i < game.size(); i++) {
@@ -86,6 +88,9 @@ class ScratchGame {
     }
 }
 
+/**
+ * Represents a single scratchcard
+ */
 class Scratchcard implements Cloneable {
 
     public Integer id;
@@ -115,7 +120,12 @@ class Scratchcard implements Cloneable {
         this.matches = matches;
     }
 
-    public Integer getGameId(String idString) {
+    /**
+     * Extract the Game ID from a string like 'Game 3'
+     * @param idString
+     * @return ID as an integer
+     */
+    private Integer getGameId(String idString) {
         Pattern r = Pattern.compile(ID_REGEX);
         Matcher m = r.matcher(idString);
         if (m.find()) {
@@ -125,6 +135,11 @@ class Scratchcard implements Cloneable {
         }
     }
 
+    /**
+     * Parse the numbers from the input text into a list of integers
+     * @param gameInfo
+     * @param resultsContainer
+     */
     public void extractGameInfo(String gameInfo, List<Integer> resultsContainer) {
         for (String s : gameInfo.split(" ")) {
             if (!s.equals("") && !s.equals(" ")) {
@@ -133,6 +148,10 @@ class Scratchcard implements Cloneable {
         }
     }
 
+    /**
+     * Return the score as described in part 1 of this problem
+     * @return part 1 score for this scratch card
+     */
     public int getPartOneScore() {
         return (int) Math.pow(2, matches-1);
     }
